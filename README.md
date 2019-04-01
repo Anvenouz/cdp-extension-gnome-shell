@@ -4,6 +4,7 @@ Display the net value of Ethereum from [cdp-equalizer](https://github.com/efemer
 ## Installation
 
 Add cdp-extension in $HOME/.local/share/gnome-shell/extensions/
+Enable `Cdp` on Tweaks extensions
 
 ## Configure your URL
 
