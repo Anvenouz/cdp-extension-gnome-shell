@@ -6,6 +6,10 @@ const PanelMenu = imports.ui.panelMenu;
 const Clutter = imports.gi.Clutter;
 // const GLib = imports.gi.GLib;
 const Soup = imports.gi.Soup;
+const PopupMenu = imports.ui.popupMenu;
+const Gio       = imports.gi.Gio;
+
+let button, settings;
 
 
 let url = 'https://anvenouz.be/';
@@ -13,18 +17,21 @@ let _session = new Soup.SessionAsync();
 
 const CdpIndicator = new Lang.Class({
  Name: 'CdpIndicator', Extends: PanelMenu.Button,
-     _init: function ()
-     {
-       let d = new Date();
-       let time = d.getTime().toString();
+     _init: function () {
        this.parent(null, "Time left");
        this.buttonText = new St.Label({
-           text: time,
+           text: "Not Found",
            y_expand: true,
            y_align: Clutter.ActorAlign.CENTER
         });
 
        this.actor.add_actor(this.buttonText);
+
+       this.menuItem = new PopupMenu.PopupMenuItem("Not Found", {});
+       this.menuItem2 = new PopupMenu.PopupMenuItem("Not Found", {});
+       this.menu.addMenuItem(this.menuItem);
+       this.menu.addMenuItem(this.menuItem2);
+
        this._refresh();
      },
      _refresh: function () {
@@ -46,6 +53,8 @@ const CdpIndicator = new Lang.Class({
             let json = JSON.parse(data);
             let text = json.Current.EthNet + " Eth";
             this.buttonText.set_text(text);
+            this.menuItem.label.set_text( "Net   : " + json.Current.DaiNet + " DAI");
+            this.menuItem2.label.set_text("Price : "+ json.Current.Price + "   $");
          })
         );
     }
@@ -53,17 +62,14 @@ const CdpIndicator = new Lang.Class({
 
 let twMenu;
 
-function init()
-{
+function init() {
 }
 
-function enable()
-{
+function enable() {
   twMenu = new CdpIndicator;
   Main.panel.addToStatusArea('tw-cdp-indicator', twMenu);
 }
 
-function disable()
-{
+function disable() {
   twMenu.destroy();
 }
