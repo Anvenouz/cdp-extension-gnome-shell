@@ -8,9 +8,7 @@ const Clutter = imports.gi.Clutter;
 const Soup = imports.gi.Soup;
 const PopupMenu = imports.ui.popupMenu;
 const Gio       = imports.gi.Gio;
-
-let button, settings;
-
+const REFRESH_TIME = 10;
 
 let url = 'https://anvenouz.be/';
 let _session = new Soup.SessionAsync();
@@ -43,7 +41,7 @@ const CdpIndicator = new Lang.Class({
       // this.buttonText.set_text(date);
 
       // the refresh function will be called every 10 sec.
-      this._timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._refresh));
+      this._timeout = Mainloop.timeout_add_seconds(REFRESH_TIME, Lang.bind(this, this._refresh));
     },
     _loadDate: function(){
         let request = Soup.Message.new('GET', url);
